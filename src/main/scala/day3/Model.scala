@@ -14,6 +14,18 @@ object Model {
     private def isNumberAdjacent(part: Part.Number) = {
       part.adjacentCoordinates.exists(coordinates => symbols.exists(_.coordinates == coordinates))
     }
+
+    val gears: List[Gear] = {
+      def adjacentNumbers(symbol: Part.Symbol): List[Part.Number] =
+        validNumberParts.filter(_.adjacentCoordinates.contains(symbol.coordinates))
+
+      symbols.collect {
+        case symbol if symbol.value == "*" && adjacentNumbers(symbol).length == 2 =>
+          Gear(symbol, adjacentNumbers(symbol))
+      }
+    }
+
+    val sumGearsRatio: Int = gears.map(_.ratio).sum
   }
   object Engine {
     def apply(input: String): Engine = {
@@ -50,5 +62,8 @@ object Model {
       }.toList
     }
     case class Symbol(value: String, coordinates: Coordinates) extends Part
+  }
+  case class Gear(symbol: Part.Symbol, adjacentNumbers: List[Part.Number]) {
+    val ratio: Int = adjacentNumbers.map(_.value).product
   }
 }

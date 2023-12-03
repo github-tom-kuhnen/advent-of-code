@@ -13,8 +13,9 @@ object Main extends App {
   }
 
   private def secondPart(): Unit = {
+    println(engine.sumGearsRatio)
   }
 
   firstPart() //559667
-  secondPart() //
+  secondPart() //86841457
 }

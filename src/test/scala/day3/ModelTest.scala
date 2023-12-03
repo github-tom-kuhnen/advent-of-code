@@ -48,6 +48,42 @@ class ModelTest extends AnyFlatSpec {
     Engine.apply(input).sumValidNumbers shouldBe 4361
   }
 
+
+  "gears" should "return all gears" in {
+    val input =
+      """467..114..
+        |...*......
+        |..35..633.
+        |......#...
+        |617*......
+        |.....+.58.
+        |..592.....
+        |......755.
+        |...$.*....
+        |.664.598..""".stripMargin
+
+    Engine.apply(input).gears.map(_.symbol) should contain only(
+      Part.Symbol("*", Coordinates(3, 1)),
+      Part.Symbol("*", Coordinates(5, 8)),
+    )
+  }
+
+  "sumGearsRatio" should "return the sum of all gear ratios" in {
+    val input =
+      """467..114..
+        |...*......
+        |..35..633.
+        |......#...
+        |617*......
+        |.....+.58.
+        |..592.....
+        |......755.
+        |...$.*....
+        |.664.598..""".stripMargin
+
+    Engine.apply(input).sumGearsRatio shouldBe 467835
+  }
+
   behavior of "Part.Number"
   "forbiddenSymbolCoordinates" should "return all forbidden coordinates" in {
     val input = Part.Number(12, Coordinates(0, 0))
