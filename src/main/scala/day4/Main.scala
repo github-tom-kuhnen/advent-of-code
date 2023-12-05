@@ -13,8 +13,9 @@ object Main extends App {
   }
 
   private def secondPart(): Unit = {
+    println(cardTable.winningCards.length)
   }
 
-  firstPart() //
-  secondPart() //
+  firstPart() //28750
+  secondPart() //10212704
 }
