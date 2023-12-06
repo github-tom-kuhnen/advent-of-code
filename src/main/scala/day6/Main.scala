@@ -6,16 +6,17 @@ import services.FileReaderService
 object Main extends App {
 
   val input = FileReaderService.read("day6.txt")
-  private val raceTable = RaceTable.apply(input)
 
   private def firstPart(): Unit = {
+    val raceTable = RaceTable.apply(input)
     println(raceTable.differentWinningWaysEachRace)
   }
 
   private def secondPart(): Unit = {
-    println("second part")
+    val raceTable = RaceTable.apply(input, trimSpaces = true)
+    println(raceTable.differentWinningWaysEachRace)
   }
 
-  firstPart() //
-  secondPart() //
+  firstPart() //275724
+  secondPart() //37286485
 }

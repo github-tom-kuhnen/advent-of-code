@@ -19,13 +19,12 @@ class ModelTest extends AnyFlatSpec {
     race.isHoldingTimeWinning(7) shouldBe false
   }
   "differentWinningWays" should "return the number of different ways to win" in {
-    val race = Race(7, 9)
-
-    race.differentWinningWays shouldBe 4
+    Race(7, 9).differentWinningWays shouldBe 4
+    Race(71530, 940200).differentWinningWays shouldBe 71503
   }
 
   behavior of "RaceTable"
-  "apply" should "create a RaceTable" in {
+  "apply" should "create a RaceTable with multiple races" in {
     val input =
       """Time:      7  15   30
         |Distance:  9  40  200""".stripMargin
@@ -37,6 +36,28 @@ class ModelTest extends AnyFlatSpec {
     )
 
     assert(RaceTable.apply(input) == RaceTable(expectedRaces))
+  }
+  "apply" should "create a RaceTable with only one race" in {
+    val input =
+      """Time:      71530
+        |Distance:  940200""".stripMargin
+
+    val expectedRaces = List(
+      Race(71530, 940200)
+    )
+
+    assert(RaceTable.apply(input) == RaceTable(expectedRaces))
+  }
+  "applyWithoutSpace" should "create a RaceTable with only one race" in {
+    val input =
+      """Time:      7  15   30
+        |Distance:  9  40  200""".stripMargin
+
+    val expectedRaces = List(
+      Race(71530, 940200)
+    )
+
+    assert(RaceTable.apply(input, trimSpaces = true) == RaceTable(expectedRaces))
   }
   "differentWinningWaysEachRace" should "return the product of all differentWinningWays of all races " in {
     val raceTable = RaceTable(List(
