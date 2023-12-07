@@ -26,9 +26,8 @@ object Model {
 
   case class Hand(cards: List[Char]) {
     val handKind: HandKind = {
-      val groupedCards = cards.groupBy(identity).view.mapValues(_.size)
-      val (_, mostCount) = groupedCards.maxBy(_._2)
-      mostCount match {
+      val maxCardCombination = cards.groupBy(identity).values.map(_.size).max
+      maxCardCombination match {
         case 5 => FiveCards
         case 4 => FourCards
         case 3 if cards.distinct.size == 2 => FullHouse
@@ -43,7 +42,7 @@ object Model {
       if (this == hand) {
         0
       } else {
-        val comparedValue = handKindsSortedByValue.indexOf(hand.handKind).compareTo(handKindsSortedByValue.indexOf(this.handKind))
+        val comparedValue = handKindsSortedByValue.indexOf(hand.bestHandKindWithJoker).compareTo(handKindsSortedByValue.indexOf(this.bestHandKindWithJoker))
         if (comparedValue == 0) {
           Hand.compareSameHandKind(this, hand)
         } else {
@@ -51,9 +50,20 @@ object Model {
         }
       }
     }
+
+    def bestHandKindWithJoker: HandKind = {
+      cards.count(_ == 'J') match {
+        case 5 => FiveCards
+        case 0 => handKind
+        case nbJokers =>
+          val otherCards = cards.filter(_ != 'J')
+          val replacedHands = otherCards.distinct.map(card => otherCards ++ List.fill(nbJokers)(card)).map(Hand.apply)
+          replacedHands.max.handKind
+      }
+    }
   }
   object Hand {
-    private val cardsSortedByValue: List[Char] = List('A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2')
+    private val cardsSortedByValue: List[Char] = List('A', 'K', 'Q', 'T', '9', '8', '7', '6', '5', '4', '3', '2', 'J')
     def apply(input: String): Hand = Hand(input.toList)
 
     @tailrec

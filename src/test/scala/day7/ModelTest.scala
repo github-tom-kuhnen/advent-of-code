@@ -50,10 +50,10 @@ class ModelTest extends AnyFlatSpec {
 
     given.sorted shouldBe List(
       Hand.apply("32T3K"),
-      Hand.apply("KTJJT"),
       Hand.apply("KK677"),
       Hand.apply("T55J5"),
       Hand.apply("QQQJA"),
+      Hand.apply("KTJJT"),
     )
   }
 
@@ -77,6 +77,19 @@ class ModelTest extends AnyFlatSpec {
         |KTJJT 220
         |QQQJA 483""".stripMargin
 
-    Table.apply(input).totalWinnings shouldBe 6440
+    Table.apply(input).totalWinnings shouldBe 5905
+  }
+
+  "bestHandKindWithJoker" should "return the best hand kind with jokers" in {
+    Hand.apply("32T3K").bestHandKindWithJoker shouldBe HandKind.OnePair
+    Hand.apply("T55J5").bestHandKindWithJoker shouldBe HandKind.FourCards
+    Hand.apply("KK677").bestHandKindWithJoker shouldBe HandKind.TwoPair
+    Hand.apply("KTJJT").bestHandKindWithJoker shouldBe HandKind.FourCards
+    Hand.apply("QQQJA").bestHandKindWithJoker shouldBe HandKind.FourCards
+  }
+
+  "compareTo" should "compare with comparing with jokes" in {
+    Hand.apply("TTTT2").compareTo(Hand.apply("JKKK2")) shouldBe 1
+    Hand.apply("JJJJJ").compareTo(Hand.apply("JJJJJ")) shouldBe 0
   }
 }

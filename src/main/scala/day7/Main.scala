@@ -13,8 +13,10 @@ object Main extends App {
   }
 
   private def secondPart(): Unit = {
+    val table = Table.apply(input)
+    println(table.totalWinnings) // changing the .compareTo with using bestHandKindWithJoker
   }
 
   firstPart() //250370104
-  secondPart() //
+  secondPart() //251735672
 }
