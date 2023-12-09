@@ -10,20 +10,33 @@ object Model {
   }
   case class Node(value: String, ways: Ways)
   case class MoveTable(table: Map[String, Ways], moves: List[Direction]) {
+
+    def startSimpleRun(): Int = {
+      moveFrom(List("AAA"), endingCondition = nodes => nodes.forall(_ == "ZZZ"))
+    }
+
+    def startGhostRun(): Int = {
+      val startedNodes = table.keys.toList.filter(_.endsWith("A"))
+      moveFrom(startedNodes, endingCondition = nodes => nodes.forall(_.endsWith("Z")))
+    }
     @tailrec
-    final def moveFrom(node: String, index: Int = 0): Int = {
-      if (node == "ZZZ") {
+    private def moveFrom(nodes: List[String], index: Int = 0, endingCondition: List[String] => Boolean): Int = {
+      if (endingCondition(nodes)) {
         index
       } else {
         val move = moves(index % moves.length)
-        val ways = table(node)
 
-        val nextNode = move match {
-          case Direction.Left => ways.left
-          case Direction.Right => ways.right
+        val nextNodes = nodes.map {
+          node =>
+            val ways = table(node)
+
+            move match {
+              case Direction.Left => ways.left
+              case Direction.Right => ways.right
+            }
         }
 
-        moveFrom(nextNode, index + 1)
+        moveFrom(nextNodes, index + 1, endingCondition)
       }
     }
   }

@@ -33,7 +33,7 @@ class ModelTest extends AnyFlatSpec {
 
     MoveTable.apply(input) shouldBe expected
   }
-  "moveFrom" should "return the number of moves to go from A to Z" in {
+  "startSimpleRun" should "return the number of moves to go from AAA to ZZZ" in {
     val input =
       """LLR
         |
@@ -41,9 +41,9 @@ class ModelTest extends AnyFlatSpec {
         |BBB = (AAA, ZZZ)
         |ZZZ = (ZZZ, ZZZ)""".stripMargin
 
-    MoveTable.apply(input).moveFrom("AAA") shouldBe 6
+    MoveTable.apply(input).startSimpleRun() shouldBe 6
   }
-  "moveFrom" should "return the number of moves to go from A to Z, simple case" in {
+  "startSimpleRun" should "return the number of moves to go from AAA to ZZZ, simple case" in {
     val input =
       """RL
         |
@@ -55,6 +55,21 @@ class ModelTest extends AnyFlatSpec {
         |GGG = (GGG, GGG)
         |ZZZ = (ZZZ, ZZZ)""".stripMargin
 
-    MoveTable.apply(input).moveFrom("AAA") shouldBe 2
+    MoveTable.apply(input).startSimpleRun() shouldBe 2
   }
+    "startGhostRun" should "return the number of moves to go from all nodes ending with A to all nodes ending with Z" in {
+      val input =
+        """LR
+          |
+          |11A = (11B, XXX)
+          |11B = (XXX, 11Z)
+          |11Z = (11B, XXX)
+          |22A = (22B, XXX)
+          |22B = (22C, 22C)
+          |22C = (22Z, 22Z)
+          |22Z = (22B, 22B)
+          |XXX = (XXX, XXX)""".stripMargin
+
+      MoveTable.apply(input).startGhostRun() shouldBe 6
+    }
 }

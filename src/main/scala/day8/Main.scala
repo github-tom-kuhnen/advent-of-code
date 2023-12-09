@@ -9,12 +9,14 @@ object Main extends App {
 
   private def firstPart(): Unit = {
     val table = MoveTable.apply(input)
-    println(table.moveFrom("AAA"))
+    println(table.startSimpleRun())
   }
 
   private def secondPart(): Unit = {
+    val table = MoveTable.apply(input)
+    println(table.startGhostRun()) //Too long, not finished
   }
 
-  firstPart() //
-  secondPart() //
+  firstPart() //12169
+  secondPart() //Too long, not finished
 }
