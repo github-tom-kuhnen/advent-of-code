@@ -12,10 +12,23 @@ object Model {
     }
 
     val isSafe: Boolean = (areAllLevelsIncreasing || areAllLevelsDecreasing) && areTwoAdjacentLevelsBetween1and3
+
+  }
+  object Report {
+    def isSafeByRemovingOneLevel(values: List[Int]): Boolean = {
+      Report(values).isSafe || values.indices.exists { index =>
+        val modifiedValues = values.patch(index, Nil, 1)
+        Report(modifiedValues).isSafe
+      }
+    }
   }
   case class UnusualData(reports: List[Report]) {
 
     val safeReports: List[Report] = reports.filter(_.isSafe)
+
+    val extendedSafeReports: List[Report] = reports.filter { report =>
+      Report.isSafeByRemovingOneLevel(report.levels)
+    }
   }
 
   object UnusualData {

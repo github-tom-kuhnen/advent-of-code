@@ -11,4 +11,5 @@ object Main extends App {
   val result = UnusualData(input)
 
   println(s"Safe reports sum : ", result.safeReports.length)
+  println(s"Extended safe reports sum : ", result.extendedSafeReports.length)
 }

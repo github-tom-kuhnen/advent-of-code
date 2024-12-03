@@ -57,4 +57,16 @@ class ModelTest extends AnyFlatSpec {
     assert(safeReports.head == reports.head)
     assert(safeReports.last == reports.last)
   }
+
+  "isSafeByRemovingOneLevel" should "return true if the report is safe by removing one level" in {
+    val input = FileReaderService.read("y2024/day2.txt")
+    val reports = UnusualData.apply(input).reports
+
+    assert(Report.isSafeByRemovingOneLevel(reports.head.levels))
+    assert(!Report.isSafeByRemovingOneLevel(reports(1).levels))
+    assert(!Report.isSafeByRemovingOneLevel(reports(2).levels))
+    assert(Report.isSafeByRemovingOneLevel(reports(3).levels))
+    assert(Report.isSafeByRemovingOneLevel(reports(4).levels))
+    assert(Report.isSafeByRemovingOneLevel(reports(5).levels))
+  }
 }
