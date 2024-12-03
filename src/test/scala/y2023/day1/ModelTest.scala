@@ -2,7 +2,7 @@ package y2023.day1
 
 import y2023.day1.Model.Calibration
 import org.scalatest.flatspec.AnyFlatSpec
-import y2023.services.FileReaderService
+import services.FileReaderService
 
 class ModelTest extends AnyFlatSpec {
   behavior of "Calibration"

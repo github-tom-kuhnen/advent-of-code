@@ -1,7 +1,7 @@
 package y2023.day6
 
+import services.FileReaderService
 import y2023.day6.Model.RaceTable
-import y2023.services.FileReaderService
 
 object Main extends App {
 

@@ -1,7 +1,7 @@
 package y2023.day3
 
+import services.FileReaderService
 import y2023.day3.Model.Engine
-import y2023.services.FileReaderService
 
 object Main extends App {
 

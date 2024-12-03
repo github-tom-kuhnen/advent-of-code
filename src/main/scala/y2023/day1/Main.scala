@@ -1,7 +1,7 @@
 package y2023.day1
 
+import services.FileReaderService
 import y2023.day1.Model.Calibration
-import y2023.services.FileReaderService
 
 object Main extends App {
 

@@ -1,4 +1,4 @@
-package y2023.services
+package services
 
 import scala.io.Source
 

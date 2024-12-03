@@ -1,7 +1,7 @@
 package y2023.day2
 
+import services.FileReaderService
 import y2023.day2.Model.{Bag, GameParty}
-import y2023.services.FileReaderService
 
 object Main extends App {
 

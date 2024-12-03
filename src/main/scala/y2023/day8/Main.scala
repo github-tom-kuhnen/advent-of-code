@@ -1,7 +1,7 @@
 package y2023.day8
 
+import services.FileReaderService
 import y2023.day8.Model.MoveTable
-import y2023.services.FileReaderService
 
 object Main extends App {
 
