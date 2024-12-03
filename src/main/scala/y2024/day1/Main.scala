@@ -8,5 +8,7 @@ object Main extends App {
   val input = FileReaderService.read("y2024/day1.txt")
 
   val result = LocationLists(input)
-  println(result.distances.sum)
+
+  println(s"Distance score : {}", result.distances.sum)
+  println(s"Similarity score : {}", result.similarityScores.sum)
 }

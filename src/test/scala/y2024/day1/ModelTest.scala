@@ -31,4 +31,18 @@ class ModelTest extends AnyFlatSpec {
 
     assert(input == expected)
   }
+
+  "similarityScores" should "calculate the similarity scores" in {
+
+    val inputTxt = FileReaderService.read("y2024/day1.txt")
+    val input = LocationLists(inputTxt)
+
+    val result = input.similarityScores
+
+    val expected = List(9, 4, 0, 0, 9, 9)
+
+    assert(result == expected)
+
+    assert(result.sum == 31)
+  }
 }
