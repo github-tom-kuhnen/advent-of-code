@@ -2,51 +2,58 @@ package y2024.day4
 
 object Model {
 
-  case class Report(levels: List[Int]) {
+  case class Direction(rowMove: Int, columnMove: Int)
+  case class Cell(char: Char, iRow: Int, iColumn: Int)
+  case class XmasGrid(rows: List[List[Char]]) {
+    private val rowsCount: Int = rows.length
+    private val columnsCount: Int = rows.head.length
 
-    val areAllLevelsIncreasing: Boolean = levels == levels.sorted
-    val areAllLevelsDecreasing: Boolean = levels == levels.sorted.reverse
-
-    val areTwoAdjacentLevelsBetween1and3: Boolean = levels.sliding(2).forall {
-      case List(a, b) => Math.abs(a - b) >= 1 && Math.abs(a - b) <= 3
-    }
-
-    val isSafe: Boolean = (areAllLevelsIncreasing || areAllLevelsDecreasing) && areTwoAdjacentLevelsBetween1and3
-
-  }
-  object Report {
-    def isSafeByRemovingOneLevel(values: List[Int]): Boolean = {
-      Report(values).isSafe || values.indices.exists { index =>
-        val modifiedValues = values.patch(index, Nil, 1)
-        Report(modifiedValues).isSafe
+    private def getCell(from: Cell, direction: Direction): Option[Cell] = {
+      val newRow = from.iRow + direction.rowMove
+      val newColumn = from.iColumn + direction.columnMove
+      if (newRow >= 0 && newRow < rowsCount && newColumn >= 0 && newColumn < columnsCount) {
+        Some(Cell(rows(newRow)(newColumn), newRow, newColumn))
+      } else {
+        None
       }
     }
-  }
-  case class UnusualData(reports: List[Report]) {
 
-    val safeReports: List[Report] = reports.filter(_.isSafe)
+    val nbXmas: Int = {
+      val xmasWords = for {
+        (row, iRow) <- rows.zipWithIndex
+        (char, iColumn) <- row.zipWithIndex
+        if char == 'X'
+      } yield nbXmasWords(Cell(char, iRow, iColumn))
+      xmasWords.sum
+    }
 
-    val extendedSafeReports: List[Report] = reports.filter { report =>
-      Report.isSafeByRemovingOneLevel(report.levels)
+    private def nbXmasWords(from: Cell): Int = {
+      val adjacentCells = getAdjacentCells(from)
+      val mCells = adjacentCells.filter(_.char == 'M')
+
+      mCells.count {
+        mCell =>
+          val direction = Direction(mCell.iRow - from.iRow, mCell.iColumn - from.iColumn)
+          getCell(mCell, direction) match {
+            case Some(cell) if cell.char == 'A' =>
+              getCell(cell, direction).exists(_.char == 'S')
+            case _ => false
+          }
+      }
+    }
+
+    private def getAdjacentCells(from: Cell): List[Cell] = {
+      val directions = List(
+        Direction(-1, 0), Direction(-1, 1), Direction(0, 1), Direction(1, 1),
+        Direction(1, 0), Direction(1, -1), Direction(0, -1), Direction(-1, -1)
+      )
+      directions.flatMap(getCell(from, _))
     }
   }
 
-  object UnusualData {
-    /**
-     * Example input :
-     * 7 6 4 2 1
-     * 1 2 7 8 9
-     * 9 7 6 2 1
-     * 1 3 2 4 5
-     * 8 6 4 4 1
-     * 1 3 6 7 9
-     */
-    def apply(input: String): UnusualData = {
-      val reports = input.linesIterator.map { line =>
-        val levels = line.split("\\s+").map(_.toInt).toList
-        Report(levels)
-      }.toList
-      UnusualData(reports)
+  object XmasGrid {
+    def apply(input: String): XmasGrid = {
+      XmasGrid(rows = input.split("\n").map(_.toList).toList)
     }
   }
 }
