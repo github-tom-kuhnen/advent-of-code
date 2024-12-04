@@ -56,4 +56,24 @@ class ModelTest extends AnyFlatSpec {
 
     assert(result.nbXmas == 18)
   }
+
+  "nbMasX" should "return the number of MasX in a simple grid" in {
+    val inputTxt =
+      """M.S
+        |.A.
+        |M.S""".stripMargin
+
+    val result = XmasGrid.apply(inputTxt)
+
+    assert(result.nbMasX == 1)
+  }
+
+
+  "nbMasX" should "return the number of MasX in a complex grid" in {
+    val input = FileReaderService.read("y2024/day4.txt")
+
+    val result = XmasGrid.apply(input)
+
+    assert(result.nbMasX == 9)
+  }
 }

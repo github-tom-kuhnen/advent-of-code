@@ -10,4 +10,5 @@ object Main extends App {
   val result = XmasGrid(input)
 
   println(s"XMas count ", result.nbXmas)
+  println(s"MasX count ", result.nbMasX)
 }
