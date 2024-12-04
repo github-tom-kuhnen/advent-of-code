@@ -10,4 +10,5 @@ object Main extends App {
   val result = MultiplierEngine(input)
 
   println(s"Totals sum : ", result.totalsSum)
+  println(s"Filtered totals sum : ", result.filteredTotalSum(input))
 }
