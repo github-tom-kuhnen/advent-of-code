@@ -2,7 +2,7 @@ package y2024.day5
 
 import org.scalatest.flatspec.AnyFlatSpec
 import services.FileReaderService
-import y2024.day5.Model.{PageUpdate, SafetyManual}
+import y2024.day5.Model.{PageOrderingRule, PageUpdate, SafetyManual}
 
 class ModelTest extends AnyFlatSpec {
   behavior of "SafetyManual"
@@ -101,4 +101,29 @@ class ModelTest extends AnyFlatSpec {
 
     assert(result == 143)
   }
+
+  "computeSortedPages" should "return a list of pages sorted from the rules" in {
+    val input = """61|13
+                  |53|29
+                  |61|53""".stripMargin
+
+    val rules = List(PageOrderingRule(61, 13), PageOrderingRule(53, 29), PageOrderingRule(61, 53))
+
+    val result = SafetyManual.computeSortedPages(rules)
+
+    val expected = List(61, 13, 53, 29)
+
+    assert(result == expected)
+  }
+
+//  "sortPagesUpdate" should "sort pages from ordered pages" in {
+//    val toUpdate = PageUpdate(List(53, 47, 56, 61, 26))
+//    val orderedPages = List(26, 61, 47, 56, 53)
+//
+//    val expected = PageUpdate(List(53, 26, 61, 47, 33))
+//
+//    val result = toUpdate.sortPagesUpdate(orderedPages)
+//
+//    assert(result == expected)
+//  }
 }

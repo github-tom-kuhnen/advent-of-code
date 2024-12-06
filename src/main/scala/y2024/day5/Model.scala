@@ -10,6 +10,15 @@ object Model {
   }
   case class PageUpdate(pages: List[Int]) {
     val middlePage: Int = pages(pages.length / 2)
+
+
+    def sortPagesUpdate(orderedPages: List[Int]): PageUpdate = {
+      val sortedPages = pages.sortBy {
+        page =>
+          orderedPages.indexOf(page)
+      }
+      PageUpdate(sortedPages)
+    }
   }
   object PageUpdate {
     def apply(input: String): PageUpdate = PageUpdate(input.split(',').map(_.toInt).toList)
@@ -29,6 +38,34 @@ object Model {
               else true
           }
       }
+    }
+
+    val nonSafetyUpdates = updates.diff(safetyUpdates)
+
+
+    def orderNonSafetyUpdates: List[PageUpdate] = {
+      val orderedNonSafetyUpdates = nonSafetyUpdates.sortBy(_.middlePage)
+
+      orderedNonSafetyUpdates.map {
+        update =>
+          val concernedRules: List[PageOrderingRule] = orderingRules.filter {
+            rule => update.pages.contains(rule.first) || update.pages.contains(rule.second)
+          }
+
+          val sortedPagesFromRules: List[Int] = concernedRules.flatMap {
+            rule =>
+              if (update.pages.contains(rule.first) && update.pages.contains(rule.second))
+                List(rule.first, rule.second)
+              else if (update.pages.contains(rule.first))
+                List(rule.first)
+              else
+                List(rule.second)
+          }
+
+          update.sortPagesUpdate(sortedPagesFromRules)
+      }
+
+      orderedNonSafetyUpdates
     }
 
     val totalMiddleSafetyPages: Int = safetyUpdates.map(_.middlePage).sum
