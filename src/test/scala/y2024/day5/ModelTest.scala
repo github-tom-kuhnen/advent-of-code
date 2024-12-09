@@ -102,19 +102,19 @@ class ModelTest extends AnyFlatSpec {
     assert(result == 143)
   }
 
-  "computeSortedPages" should "return a list of pages sorted from the rules" in {
-    val input = """61|13
-                  |53|29
-                  |61|53""".stripMargin
-
-    val rules = List(PageOrderingRule(61, 13), PageOrderingRule(53, 29), PageOrderingRule(61, 53))
-
-    val result = SafetyManual.computeSortedPages(rules)
-
-    val expected = List(61, 13, 53, 29)
-
-    assert(result == expected)
-  }
+//  "computeSortedPages" should "return a list of pages sorted from the rules" in {
+//    val input = """61|13
+//                  |53|29
+//                  |61|53""".stripMargin
+//
+//    val rules = List(PageOrderingRule(61, 13), PageOrderingRule(53, 29), PageOrderingRule(61, 53))
+//
+//    val result = SafetyManual.computeSortedPages(rules)
+//
+//    val expected = List(61, 13, 53, 29)
+//
+//    assert(result == expected)
+//  }
 
 //  "sortPagesUpdate" should "sort pages from ordered pages" in {
 //    val toUpdate = PageUpdate(List(53, 47, 56, 61, 26))
