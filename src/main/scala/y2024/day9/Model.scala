@@ -8,15 +8,15 @@ object Model {
   case class BlocFile(index: Int, value: Int) extends Unit
   case class FreeSpace(value: Int) extends Unit
 
-  case class DiskUnit(value: Char)
+  case class DiskUnit(value: Int)
   object DiskUnit {
-    object Empty extends DiskUnit('.')
+    object Empty extends DiskUnit(-1)
   }
 
   case class DiskMap(units: List[Unit]) {
     val diskUnits: List[DiskUnit] = units.flatMap {
-      case BlocFile(index, value) => (index.toString * value).map(DiskUnit(_))
-      case FreeSpace(value) => ("." * value).map(DiskUnit(_))
+      case BlocFile(index, value) => List.fill(value)(DiskUnit(index))
+      case FreeSpace(value) => List.fill(value)(DiskUnit.Empty)
     }
   }
 
@@ -54,10 +54,13 @@ object Model {
     def checksum(diskUnits: List[DiskUnit]): Int = {
       diskUnits.zipWithIndex.map {
         case (DiskUnit.Empty, _) => 0
-        case (DiskUnit(value), index) => value.toString.toInt * index
+        case (DiskUnit(value), index) => value * index
       }.sum
     }
 
-    def diskUnitsToString(diskUnits: List[DiskUnit]): String = diskUnits.map(_.value).mkString
+    def diskUnitsToString(diskUnits: List[DiskUnit]): String = diskUnits.map {
+      case DiskUnit.Empty => '.'
+      case DiskUnit(value) => value.toString
+    }.mkString
   }
 }
