@@ -31,29 +31,24 @@ object Model {
     }
 
     def reorderDiskUnits(diskUnits: List[DiskUnit]): List[DiskUnit] = {
-      var reorderedDiskUnits = diskUnits
 
-      var endDiskUnitsIndex = reorderedDiskUnits.length - 1
-      var index = 0
-      while (index < endDiskUnitsIndex) {
-        if (reorderedDiskUnits(index) == DiskUnit.Empty) {
-          var hasBeenReordered = false
-          while (index < endDiskUnitsIndex && !hasBeenReordered) {
-            reorderedDiskUnits(endDiskUnitsIndex) match {
+      var maxIndex = diskUnits.length - 1
+
+      diskUnits.zipWithIndex.map {
+        case (_, index) if index > maxIndex => DiskUnit.Empty
+        case (DiskUnit.Empty, index) =>
+          var lastElement: Option[DiskUnit] = None
+          while (lastElement.isEmpty && maxIndex > index) {
+            diskUnits(maxIndex) match {
               case DiskUnit.Empty =>
-                endDiskUnitsIndex -= 1
               case unit =>
-                reorderedDiskUnits = reorderedDiskUnits.updated(index, unit)
-                reorderedDiskUnits = reorderedDiskUnits.updated(endDiskUnitsIndex, DiskUnit.Empty)
-                hasBeenReordered = true
+                lastElement = Some(unit)
             }
+            maxIndex -= 1
           }
-        }
-
-        index += 1
+          lastElement.getOrElse(DiskUnit.Empty)
+        case (unit, _) => unit
       }
-
-      reorderedDiskUnits
     }
 
     def checksum(diskUnits: List[DiskUnit]): Int = {

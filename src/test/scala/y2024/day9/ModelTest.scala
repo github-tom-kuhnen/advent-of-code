@@ -26,22 +26,22 @@ class ModelTest extends AnyFlatSpec {
   "reorderDiskUnits" should "reorder disk units" in {
     // "0..111....22222"
     val diskMap = DiskMap.apply("12345").diskUnits
-    val result = DiskMap.reorderDiskUnits(diskMap)
+    val result = DiskMap.diskUnitsToString(DiskMap.reorderDiskUnits(diskMap))
 
     val expected = "022111222......"
 
-    assert(DiskMap.diskUnitsToString(result) == expected)
+    assert(result == expected)
   }
 
 
   "reorderDiskUnits" should "reorder disk units complex" in {
     // "00...111...2...333.44.5555.6666.777.888899"
     val diskMap = DiskMap.apply("2333133121414131402").diskUnits
-    val result = DiskMap.reorderDiskUnits(diskMap)
+    val result = DiskMap.diskUnitsToString(DiskMap.reorderDiskUnits(diskMap))
 
     val expected = "0099811188827773336446555566.............."
 
-    assert(DiskMap.diskUnitsToString(result) == expected)
+    assert(result == expected)
   }
 
   "checksum" should "calculate the checksum" in {
@@ -52,5 +52,4 @@ class ModelTest extends AnyFlatSpec {
 
     assert(result == 1928)
   }
-
 }
