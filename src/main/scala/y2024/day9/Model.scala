@@ -30,7 +30,7 @@ object Model {
       DiskMap(units)
     }
 
-    def reorderDiskUnits(diskUnits: List[DiskUnit]): List[DiskUnit] = {
+    def reorderDiskUnits(diskUnits: Seq[DiskUnit]): Seq[DiskUnit] = {
 
       var maxIndex = diskUnits.length - 1
 
@@ -51,14 +51,14 @@ object Model {
       }
     }
 
-    def checksum(diskUnits: List[DiskUnit]): Int = {
+    def checksum(diskUnits: Seq[DiskUnit]): Long = {
       diskUnits.zipWithIndex.map {
-        case (DiskUnit.Empty, _) => 0
-        case (DiskUnit(value), index) => value * index
+        case (DiskUnit.Empty, _) => 0.toLong
+        case (DiskUnit(value), index) => value.toLong * index.toLong
       }.sum
     }
 
-    def diskUnitsToString(diskUnits: List[DiskUnit]): String = diskUnits.map {
+    def diskUnitsToString(diskUnits: Seq[DiskUnit]): String = diskUnits.map {
       case DiskUnit.Empty => '.'
       case DiskUnit(value) => value.toString
     }.mkString

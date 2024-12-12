@@ -8,7 +8,7 @@ object Main extends App {
   val input = FileReaderService.read("y2024/day9.txt")
 
   val diskMap = DiskMap.apply(input)
-  val orderedDiskUnits = DiskMap.reorderDiskUnits(diskMap.diskUnits)
+  val orderedDiskUnits = DiskMap.reorderDiskUnits(diskMap.diskUnits.toVector)
   val checksum = DiskMap.checksum(orderedDiskUnits)
   println(checksum)
 }
